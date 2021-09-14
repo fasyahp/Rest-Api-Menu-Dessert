@@ -1,0 +1,538 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.82.0">
+    <title>Dashboard Menu Dessert</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+
+    <!-- Bootstrap core CSS -->
+<!-- <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+
+
+    <!-- Favicons -->
+<link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/docs/5.0/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
+<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
+<meta name="theme-color" content="#7952b3">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .show_firstpage {
+        display:block;
+      }
+      .none_firstpage {
+        display:none;
+      }
+         
+      .show_secondpage {
+        display:block;
+      }
+
+      .none_secondpage {
+        display:none;
+      }
+
+      .navbar{
+        background-color: #D15BF9;
+      }
+      #sidebarMenu{
+        background-color: #EAC3F7;
+      }
+      .sign{
+        padding: 10px;
+      }
+      .modal-body{
+        background-color: #E4B5F7;
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/5.0/examples/dashboard/dashboard.css" rel="stylesheet">
+
+    <!-- fontawesome CDN -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+
+  </head>
+  <body>
+  
+<div id="Menu">  
+
+<header class="navbar navbar-dark sticky-top flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Admin Menu Dessert</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a v-on:click="logout()" class="btn btn-danger" href="#">
+        <i class="fas fa-sign-out-alt"></i> Sign out</a>
+    </li>
+  </ul>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="#" v-on:click="makanancall()">
+              <i class="fas fa-hamburger text-danger"></i>
+              <span data-feather="home"></span>
+              Makanan
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" v-on:click="minumancall()">
+              <i class="fas fa-cocktail text-primary"></i>
+              <span data-feather="file"></span>
+              Minuman
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main  class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Dashboard Menu Dessert</h1>
+      </div>
+
+      <!-- ====== Ini Halaman Makanan ======= -->
+      <div id="mainpage" :class="style_firstpage">
+      <h2>Makanan</h2>
+
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <i class="fas fa-plus"></i> Insert Makanan
+      </button><br><br>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm">
+          <thead>
+            <tr>
+              <th width="5%">No</th>
+              <th width="10%">Nama</th>
+              <th width="25%">Harga</th>
+              <th width="25%">Gambar</th>
+              <th width="10%">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(isi_makanan,item) in makanan">
+              <td>{{item+1}}</td>
+              <td>{{isi_makanan.nama}}</td>
+              <td>{{isi_makanan.harga}}</td>
+              <td><!-- {{isi_makanan.url_gambar}} --><img v-bind:src="isi_makanan.url_gambar" height="50"></td>
+              <td class="text-center">
+                <button v-on:click="edit_data(item)" type="button" class="btn btn-warning btn-sm"
+                data-bs-target="#Modal2" data-bs-toggle="modal">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button v-on:click="delete_data(item)" type="button" class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+
+      <!-- ======= Ini Halaman Minuman ====== -->
+      <div id="secondpage" :class="style_secondpage">
+      <h2>Minuman</h2>
+
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertminuman">
+        <i class="fas fa-plus"></i> Insert Minuman
+      </button><br><br>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm">
+          <thead>
+            <tr>
+              <th width="5%">No</th>
+              <th width="20%">Nama</th>
+              <th width="35%">Harga</th>
+              <th width="20%">Gambar</th>
+              <th width="20%">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(isi_minuman,item) in minuman">
+              <td>{{item+1}}</td>
+              <td>{{isi_minuman.nama}}</td>
+              <td>{{isi_minuman.harga}}</td>
+              <td><!-- {{isi_minuman.url_gambar}} --><img v-bind:src="isi_minuman.url_gambar" height="50"></td>
+              <td>
+                <button v-on:click="edit_data_minuman(item)" type="button" class="btn btn-warning btn-sm"
+                data-bs-target="#editminuman" data-bs-toggle="modal">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button v-on:click="delete_data_minuman(item)" type="button" class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+
+
+    </main>
+  </div>
+</div>
+
+<!-- Modal Insert Makanan -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Insert Makanan</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Nama</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="input_judul">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Harga</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="input_isi">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Url Gambar</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="input_gambar">
+                </div>
+                <!-- <button type="submit" class="btn btn-primary" v-on:click="insert_to_db()">Submit</button> -->
+              </form>
+              <!-- <p>Judul is: {{input_judul}}</p>
+              <p>Isi is: {{input_isi}}</p>
+              <p>Url Gambar is: {{input_gambar}}</p> -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <i class="fas fa-times"></i> Close</button>
+              <button type="submit" class="btn btn-primary" v-on:click="insert_to_db()">
+                <i class="fas fa-save"></i> Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Untuk EDIT Makanan -->
+      <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Makanan</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Id Data</label>
+                  <input v-model="input_id_edit" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Nama Data</label>
+                  <input v-model="input_judul_edit" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Harga Data</label>
+                  <input v-model="input_isi_edit" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Url Gambar</label>
+                  <input v-model="input_gambar_edit" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+                <!-- <button type="submit" class="btn btn-primary" v-on:click="patch_data()">Simpan</button> -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+               <i class="fas fa-times"></i> Close</button>
+              <button type="button" class="btn btn-primary" v-on:click="patch_data()">
+                <i class="fas fa-save"></i> Save changes</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Insert Minuman -->
+      <div class="modal fade" id="insertminuman" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Insert Minuman</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Nama</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="input_judul">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Harga</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="input_isi">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Url Gambar</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="input_gambar">
+                </div>
+                <!-- <button type="submit" class="btn btn-primary" v-on:click="insert_to_db()">Submit</button> -->
+              <!-- <p>Judul is: {{input_judul}}</p>
+              <p>Isi is: {{input_isi}}</p>
+              <p>Url Gambar is: {{input_gambar}}</p> -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <i class="fas fa-times"></i> Close</button>
+              <button type="submit" class="btn btn-primary" v-on:click="insert_minuman_db()">
+               <i class="fas fa-save"></i> Save changes</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Untuk EDIT Minuman -->
+      <div class="modal fade" id="editminuman" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Minuman</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Id Data</label>
+                  <input v-model="input_id_edit" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Nama Data</label>
+                  <input v-model="input_judul_edit" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Harga Data</label>
+                  <input v-model="input_isi_edit" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Url Gambar</label>
+                  <input v-model="input_gambar_edit" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+                <!-- <button type="submit" class="btn btn-primary" v-on:click="patch_data_blog()">Simpan</button> -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+               <i class="fas fa-times"></i> Close</button>
+              <button type="button" class="btn btn-primary" v-on:click="patch_data_minuman()">
+               <i class="fas fa-save"></i> Save changes</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+</div>
+
+  <script type="text/javascript">
+      var vm3 = new Vue({
+      el: '#Menu',
+  
+      data: {
+        makanan:[],
+        minuman:[],
+        input_judul:'',
+        input_isi:'',
+        input_gambar:'',
+        input_id_edit:'',
+        input_judul_edit:'',
+        input_isi_edit:'',
+        input_gambar_edit:'',
+
+        style_firstpage:'show_firstpage',
+        style_secondpage:'none_secondpage'
+      },
+      methods: {
+
+        makanancall: function() {
+          this.style_firstpage = 'show_firstpage';
+          this.style_secondpage='none_secondpage';
+          axios.get('http://localhost:5000/MenuDessert/MenuMakanan').then(response => this.makanan=response.data);
+        },
+
+        minumancall: function() {
+          this.style_firstpage = 'none_firstpage';
+          this.style_secondpage='show_secondpage';
+
+          axios.get('http://localhost:5000/MenuDessert/MenuMinuman').then(response => this.minuman=response.data);
+        },
+
+        insert_to_db() {
+         // this.sliding = true
+           axios.post('http://localhost:5000/MenuDessert/MenuMakanan', {
+            nama: this.input_judul,
+            harga: this.input_isi,
+            url_gambar: this.input_gambar
+          })
+        },
+
+        edit_data(urutan) {
+          this.input_id_edit=this.makanan[urutan]._id   ;
+          this.input_judul_edit=this.makanan[urutan].nama   ;
+          this.input_isi_edit= this.makanan[urutan].harga   ;
+          this.input_gambar_edit=  this.makanan[urutan].url_gambar  ;
+        },
+
+        patch_data() {
+          axios.patch('http://localhost:5000/MenuDessert/MenuMakanan/'+this.input_id_edit, {
+            nama: this.input_judul_edit,
+            harga: this.input_isi_edit,
+            url_gambar: this.input_gambar_edit
+          })
+        },
+
+        delete_data(urutan) {
+          let data_hapus=this.makanan[urutan]._id ;
+
+          axios.delete('http://localhost:5000/MenuDessert/MenuMakanan/'+ data_hapus , {
+          })
+        },
+
+        insert_minuman_db() {
+         // this.sliding = true
+           axios.post('http://localhost:5000/MenuDessert/MenuMinuman', {
+            nama: this.input_judul,
+            harga: this.input_isi,
+            url_gambar: this.input_gambar
+          })
+        },
+
+        edit_data_minuman(urutan) {
+          this.input_id_edit=this.minuman[urutan]._id   ;
+          this.input_judul_edit=this.minuman[urutan].nama   ;
+          this.input_isi_edit= this.minuman[urutan].harga   ;
+          this.input_gambar_edit=  this.minuman[urutan].url_gambar  ;
+        },
+
+        patch_data_minuman() {
+          axios.patch('http://localhost:5000/MenuDessert/MenuMinuman/'+this.input_id_edit, {
+            nama: this.input_judul_edit,
+            harga: this.input_isi_edit,
+            url_gambar: this.input_gambar_edit
+          })
+        },
+
+        delete_data_minuman(urutan) {
+          let data_hapus=this.minuman[urutan]._id ;
+
+          axios.delete('http://localhost:5000/MenuDessert/MenuMinuman/'+ data_hapus , {
+          })
+        },
+
+        upDate_makanan: function () {
+          var token_ls = localStorage.getItem('token_app')
+          axios.get('http://localhost:5000/MenuDessert/MenuMakananadmin',
+          { headers: 
+            { 'auth-token': token_ls } }
+            ).then(response => this.makanan = response.data);
+        },
+
+        upDate_minuman: function () {
+          var token_ls = localStorage.getItem('token_app')
+          axios.get('http://localhost:5000/MenuDessert/MenuMinumanadmin',
+          { headers: 
+            { 'auth-token': token_ls } }
+            ).then(response => this.minuman = response.data);
+        },
+
+        cek_refreshtoken: function () {
+          axios.post('http://localhost:5000/MenuDessert/refresh_token', {
+            last_token: localStorage.getItem('token_app'),
+            last_username: localStorage.getItem('username')
+          })
+            .then(function (response) {
+              // simpant token baru ke localstorage
+              localStorage.setItem("token_app", response.data.token);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+        logout: function () {
+          localStorage.setItem("token_app", "");
+          localStorage.setItem("username", "");
+          window.location.href = 'http://localhost:5000/MenuDessert/login';
+        }
+      },
+
+      mounted() {
+        
+        this.upDate_makanan();
+        setInterval(this.upDate_makanan, 1000)
+
+        this.upDate_minuman();
+        setInterval(this.upDate_minuman, 1000)
+
+        //====== Cek apakah halaman boleh diakses
+        axios.post('http://localhost:5000/MenuDessert/cek_page', {
+          old_token: localStorage.getItem('token_app')
+        })
+          .then(function (response) {
+
+            if (response.data.message != 'ok') {
+              window.location.href = 'http://localhost:5000/MenuDessert/login';
+            }
+          })
+        //== hitung mundur untuk refresh token
+        setInterval(this.cek_refreshtoken, 10000)  // 10 detik
+      }
+})
+
+  </script>
+
+    <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
+  </body>
+</html>
